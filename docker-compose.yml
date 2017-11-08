@@ -1,0 +1,22 @@
+version: '3.3'
+
+services:
+  dynamo:
+    build:
+      context: dynamo
+    image: vmware-dynamo:latest
+    container_name: vmware_dynamo
+    ports:
+      - '8000:8000'
+    restart: on-failure
+
+  awslinux:
+    build:
+      context: awslinux
+    image: vmware-awslinux:latest
+    container_name: vmware_awslinux
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./awslinux:/usr/src/app
+    restart: on-failure
