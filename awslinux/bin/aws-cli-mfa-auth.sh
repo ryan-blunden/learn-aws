@@ -31,7 +31,7 @@ unset AWS_SESSION_EXPIRE
 
 aws configure
 
-results=$(aws sts get-session-token --serial-number arn:aws:iam::${ACCOUNT_NUMBER}:mfa/${IAM_USERNAME} --token-code "${TOKEN_CODE})
+results=$(aws sts get-session-token --serial-number arn:aws:iam::${ACCOUNT_NUMBER}:mfa/${IAM_USERNAME} --token-code ${TOKEN_CODE})
 
 export AWS_ACCESS_KEY_ID=$(echo $results | jq -r '.Credentials.AccessKeyId')
 export AWS_SECRET_ACCESS_KEY=$(echo $results | jq -r '.Credentials.SecretAccessKey')
