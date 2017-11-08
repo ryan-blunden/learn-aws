@@ -17,6 +17,4 @@ services:
     container_name: vmware_awslinux
     stdin_open: true
     tty: true
-    volumes:
-      - ./awslinux:/usr/src/app
     restart: on-failure
