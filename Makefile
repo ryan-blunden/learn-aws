@@ -1,12 +1,11 @@
-#######################
-#  AWS LINUX AND CLI  #
-#######################
-
-IMAGE_NAME=vmware-awslinux
-VERSION=latest
-
 awslinux-build:
-	docker build -t $(IMAGE_NAME):$(VERSION) awslinux
+	docker build -t awslinux:latest awslinux
 
 awslinux-run: awslinux-build
-	docker run --rm -it $(IMAGE_NAME) bash
+	docker run --rm -it awslinux bash
+
+dynamodb-build:
+	docker build -t dynamodb:latest dynamodb
+
+dynamodb-run: dynamodb-build
+	docker run --rm -it dynamodb

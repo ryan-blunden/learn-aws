@@ -8,6 +8,6 @@ yum install -y docker git
 service docker start
 
 # Pull down latest DevLibs source, build and run Docker API container
-git clone https://github.com/ryan-blunden/devlibs.git
+git clone --depth 1 https://github.com/ryan-blunden/devlibs.git
 cd devlibs
 make api-run
