@@ -8,4 +8,4 @@ dynamodb-build:
 	docker build -t dynamodb:latest dynamodb
 
 dynamodb-run: dynamodb-build
-	docker run --rm -it dynamodb
+	docker run --rm -it -p 8000:8000 dynamodb
