@@ -7,11 +7,17 @@
 
 VERSION=0.1.0
 UPDATED=2017-11-07
-USAGE="usage: . ./$(basename "$0") -a <account-number> -u <username> -t <mfa-token>"
+USAGE="Usage: . ./bin/$(basename "$0") -a <account-number> -u <username> -t <mfa-token>"
+OPTIND=1
 
-if [ $# == 0 ] ; then
+if [ $# == 0 ]; then
     echo $USAGE
-    return
+
+    if [ $SHLVL == 2 ]; then
+        exit
+    else
+        return
+    fi
 fi
 
 while getopts a:u:t: option
@@ -32,6 +38,10 @@ unset AWS_SESSION_EXPIRE
 aws configure
 
 results=$(aws sts get-session-token --serial-number arn:aws:iam::${ACCOUNT_NUMBER}:mfa/${IAM_USERNAME} --token-code ${TOKEN_CODE})
+
+if [ $? -gt 0 ]; then
+    return
+fi
 
 export AWS_ACCESS_KEY_ID=$(echo $results | jq -r '.Credentials.AccessKeyId')
 export AWS_SECRET_ACCESS_KEY=$(echo $results | jq -r '.Credentials.SecretAccessKey')

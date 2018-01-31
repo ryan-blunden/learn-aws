@@ -1,0 +1,21 @@
+--- /usr/local/lib/python3.5/site-packages/livereload/server.py	2016-01-19 01:59:26.000000000 +0000
++++ /tmp/server.py	2016-09-21 02:23:58.327611749 +0000
+@@ -215,17 +215,7 @@
+             (r'/livereload.js', LiveReloadJSHandler)
+         ]
+ 
+-        # The livereload.js snippet.
+-        # Uses JavaScript to dynamically inject the client's hostname.
+-        # This allows for serving on 0.0.0.0.
+-        live_script = escape.utf8((
+-            '<script type="text/javascript">'
+-            'document.write("<script src=''http://"'
+-            ' + window.location.hostname + ":{port}/livereload.js''>'
+-            ' </"+"script>");'
+-            '</script>'
+-        ).format(port=liveport))
+-
++        live_script = escape.utf8('<script src="/livereload.js"></script>')
+         web_handlers = self.get_web_handlers(live_script)
+ 
+         class ConfiguredTransform(LiveScriptInjector):
