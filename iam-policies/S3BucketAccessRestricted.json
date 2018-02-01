@@ -5,7 +5,7 @@
             "Sid": "S3PathPrefixRestrict",
             "Effect": "Allow",
             "Action": "s3:ListBucket",
-            "Resource": "arn:aws:s3:::my-shared-bucket",
+            "Resource": "arn:aws:s3:::<BUCKET_NAME>",
             "Condition": {
                 "StringLike": {
                     "s3:prefix": [
@@ -23,7 +23,7 @@
                 "s3:GetBucketTagging",
                 "s3:GetBucketLocation"
             ],
-            "Resource": "arn:aws:s3:::my-shared-bucket"
+            "Resource": "arn:aws:s3:::<BUCKET_NAME>"
         },
         {
             "Sid": "S3ObjectAction",
@@ -36,7 +36,7 @@
                 "s3:GetObjectTagging",
                 "s3:GetObjectVersion"
             ],
-            "Resource": "arn:aws:s3:::my-shared-bucket/app1/*"
+            "Resource": "arn:aws:s3:::<BUCKET_NAME>/app1/*"
         }
     ]
  }
