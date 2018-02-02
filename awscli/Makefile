@@ -1,4 +1,4 @@
-IMAGE_NAME=rabitbird/awscli
+IMAGE_NAME=rabbitbird/awscli
 VERSION=1.1
 
 awscli-build:
