@@ -9,8 +9,8 @@
             "Condition": {
                 "StringLike": {
                     "s3:prefix": [
-                        "app1",
-                        "app1/",
+                        "app-1",
+                        "app-1/*",
                         ""
                     ]
                 }
@@ -36,7 +36,7 @@
                 "s3:GetObjectTagging",
                 "s3:GetObjectVersion"
             ],
-            "Resource": "arn:aws:s3:::<BUCKET_NAME>/app1/*"
+            "Resource": "arn:aws:s3:::<BUCKET_NAME>/app-1/*"
         }
     ]
  }

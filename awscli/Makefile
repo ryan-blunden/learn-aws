@@ -1,5 +1,8 @@
+IMAGE_NAME=rabitbird/awscli
+VERSION=1.1
+
 awscli-build:
-	docker build -t awscli:1.0 .
+	docker build -t $(IMAGE_NAME):$(VERSION) .
 
 awscli-run: awscli-build
-	docker run --rm -it awscli:1.0
+	docker run --rm -it $(IMAGE_NAME):$(VERSION)

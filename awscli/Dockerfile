@@ -8,7 +8,7 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /usr/src/app
 
 RUN yum -y update && \
-    yum -y install python36 ncomplete jq less which && \
+    yum -y install python36 ncomplete jq less which findutils && \
     yum clean all
 
 COPY Pipfile Pipfile
