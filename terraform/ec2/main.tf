@@ -1,4 +1,4 @@
-resource "aws_security_group" "sg_ingress" {
+resource "aws_security_group" "sg" {
   name = "${var.security_group_name}"
   description = "Allow all inbound traffic to 22 and 8080"
   vpc_id = "${var.vpc_id}"
@@ -16,12 +16,19 @@ resource "aws_security_group" "sg_ingress" {
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  egress {
+    from_port = 0
+    to_port = 65535
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 resource "aws_instance" "instance" {
   ami = "${var.ami_id}"
   instance_type = "${var.instance_type}"
-  vpc_security_group_ids = ["${aws_security_group.sg_ingress.id}"]
+  vpc_security_group_ids = ["${aws_security_group.sg.id}"]
   subnet_id = "${var.subnet_id}"
   key_name = "${var.key_name}"
 
