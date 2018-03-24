@@ -1,23 +1,17 @@
-FROM amazonlinux:latest
-
-ENV LC_CTYPE=en_US.utf8
-ENV LC_ALL=en_US.utf8
-ENV LANG=en_US.utf8
-ENV PYTHONUNBUFFERED=1
+FROM python:3.6.4-slim-stretch
 
 WORKDIR /usr/src/app
 
-RUN yum -y update && \
-    yum -y install python36 ncomplete jq less which findutils && \
-    yum clean all
+RUN apt-get update && \
+    apt-get upgrade -y  && \
+    apt-get install -y --no-install-recommends jq less && \
+    rm -rf /var/lib/apt/lists/*
 
 COPY Pipfile Pipfile
 
-RUN ln -s /usr/bin/python3 /bin/python && \
-    easy_install-3.6 pip && \
-    \
-    pip3 install pip setuptools --upgrade && \
-    pip3 install pipenv && \
+RUN ln -s /usr/local/bin/python /bin/python && \
+    pip install pip setuptools --upgrade && \
+    pip install pipenv && \
     pipenv install --deploy --system
 
 COPY bin bin

@@ -11,10 +11,6 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get update
 apt-get -y upgrade -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"
 
-# Upgrading currently disabled
-# Need to research https://askubuntu.com/questions/146921/how-do-i-apt-get-y-dist-upgrade-without-a-grub-config-prompt
-# apt-get upgrade -y
-
 apt-get install -y \
     apt-transport-https \
     ca-certificates \

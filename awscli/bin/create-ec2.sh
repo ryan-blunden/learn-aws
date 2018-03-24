@@ -3,11 +3,6 @@
 # To find the list of Amazon Liunx AMI IDs for each region, go to
 # https://aws.amazon.com/amazon-linux-ami/#Amazon_Linux_AMI_IDs
 
-# TODO:
-# - If failure at any stage, delete previously created resources.
-#
-set -e
-
 echo "[info]: Creating Security Group."
 
 echo "VPC ID: "
@@ -25,7 +20,7 @@ aws ec2 create-tags --resources ${SECURITY_GROUP_ID} --tags "Key=Name,Value=${SE
 
 echo "[info]: Applying Ingress rules."
 
-echo "Your IP Address (to restrict SSH access): "
+echo "IP Address (CIDR format) to restrict SSH access:"
 read YOUR_IP
 
 # Create ingress rules (port 80, 443 and port 22)
@@ -79,11 +74,20 @@ EC2_RESULT=`aws ec2 run-instances \
     --security-group-ids ${SECURITY_GROUP_ID} \
     --associate-public-ip-address`
 
-echo $EC2_RESULT | jq
+RESULT=$?
+
+echo ${EC2_RESULT} | jq
+
+if [ ${RESULT} != 0 ]; then
+    echo -e "[error]: Unable to create EC2 instance. Cleaning up security group.\n"
+    aws ec2 delete-security-group --group-id ${SECURITY_GROUP_ID}
+    exit ${RESULT}
+fi
+
 
 echo "[info]: Setting instance name."
 
-INSTANCE_ID=`echo $EC2_RESULT | jq -r .Instances[0].InstanceId`
+INSTANCE_ID=`echo ${EC2_RESULT} | jq -r .Instances[0].InstanceId`
 aws ec2 create-tags --resources ${INSTANCE_ID} --tags "Key=Name,Value=${INSTANCE_NAME}"
 
 echo "[info]: Finished."
