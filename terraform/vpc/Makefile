@@ -1,11 +1,15 @@
+IMAGE_NAME=rabbitbird/terraform
+VERSION=1.0
+WORKDIR=/usr/src/app
+
 init:
-	terraform init
+	docker container run --rm -it -v $(CURDIR):/usr/src/app $(IMAGE_NAME):$(VERSION) terraform init
 
 plan:
-	terraform plan -var-file terraform.tfvars
+	docker container run --rm -it -v $(CURDIR):/usr/src/app $(IMAGE_NAME):$(VERSION) terraform plan -var-file terraform.tfvars
 
 apply:
-	terraform apply -var-file terraform.tfvars
+	docker container run --rm -it -v $(CURDIR):/usr/src/app $(IMAGE_NAME):$(VERSION) terraform apply -auto-approve -var-file terraform.tfvars
 
 destroy:
-	terraform destroy -var-file terraform.tfvars
+	docker container run --rm -it -v $(CURDIR):/usr/src/app $(IMAGE_NAME):$(VERSION) terraform destroy -force -var-file terraform.tfvars

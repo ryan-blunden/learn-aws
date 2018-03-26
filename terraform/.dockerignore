@@ -1,0 +1,5 @@
+.terraform
+Dockerfile
+Makefile
+terraform.tfstate
+*.tf

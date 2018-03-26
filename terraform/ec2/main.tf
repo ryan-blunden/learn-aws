@@ -1,4 +1,4 @@
-resource "aws_security_group" "sg" {
+resource "aws_security_group" "resource" {
   name = "${var.security_group_name}"
   description = "Allow all inbound traffic to 22 and 8080"
   vpc_id = "${var.vpc_id}"
@@ -7,7 +7,7 @@ resource "aws_security_group" "sg" {
     from_port = 22
     to_port = 22
     protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["${var.ssh_inbound_cidr}"]
   }
 
   ingress {
@@ -25,16 +25,17 @@ resource "aws_security_group" "sg" {
   }
 }
 
-resource "aws_instance" "instance" {
+resource "aws_instance" "resource" {
   ami = "${var.ami_id}"
   instance_type = "${var.instance_type}"
-  vpc_security_group_ids = ["${aws_security_group.sg.id}"]
+  vpc_security_group_ids = ["${aws_security_group.resource.id}"]
   subnet_id = "${var.subnet_id}"
   key_name = "${var.key_name}"
 
   user_data = <<-EOF
               # Update System
               yum update -y
+              yum upgrade
               yum install -y docker git make nano
 
               # Start Docker now that it is installed

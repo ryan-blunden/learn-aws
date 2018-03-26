@@ -2,7 +2,7 @@
 # VPC
 # ---------------------------------------------------------------------------------------------------------------------
 
-resource "aws_vpc" "${var.vpc_name}" {
+resource "aws_vpc" "resource" {
   cidr_block = "${var.vpc_cidr}"
   enable_dns_hostnames = true
 
@@ -13,11 +13,11 @@ resource "aws_vpc" "${var.vpc_name}" {
 
 # We don't use the "Main" route table to avoid confusion with implicitly assigned subnets.
 # Exolicit is better than implicit.
-resource "aws_default_route_table" "r" {
-  default_route_table_id = "${aws_vpc.cwc-dev.default_route_table_id}"
+resource "aws_default_route_table" "resource" {
+  default_route_table_id = "${aws_vpc.resource.default_route_table_id}"
 
   tags {
-    Name = "main-route-table-not-used"
+    Name = "${var.vpc_name}-ig-main-route-table-not-used"
   }
 }
 
@@ -26,30 +26,11 @@ resource "aws_default_route_table" "r" {
 # INTERNET GATEWAY
 # ---------------------------------------------------------------------------------------------------------------------
 
-resource "aws_internet_gateway" "${var.igw_name}" {
-  vpc_id = "${aws_vpc.cwc-dev.id}"
+resource "aws_internet_gateway" "resource" {
+  vpc_id = "${aws_vpc.resource.id}"
 
   tags {
-    Name = "${var.igw_name}"
-  }
-}
-
-
-# ---------------------------------------------------------------------------------------------------------------------
-# NAT GATEWAY
-# Includes the required creation of an Elastic IP.
-# ---------------------------------------------------------------------------------------------------------------------
-
-resource "aws_eip" "cwc-ngw-eip" {
-  vpc = true
-}
-
-resource "aws_nat_gateway" "cwc-ngw" {
-  allocation_id = "${aws_eip.cwc-ngw-eip.id}"
-  subnet_id     = "${aws_subnet.ap-southeast-2a-public.id}"
-
-  tags {
-    Name = "cwc-ngw"
+    Name = "${var.vpc_name}-ig"
   }
 }
 
@@ -58,23 +39,15 @@ resource "aws_nat_gateway" "cwc-ngw" {
 # PUBLIC SUBNETS
 # ---------------------------------------------------------------------------------------------------------------------
 
-resource "aws_subnet" "ap-southeast-2a-public" {
-  vpc_id = "${aws_vpc.cwc-dev.id}"
-  cidr_block = "${var.public_subnet_cidrs["a"]}"
-  availability_zone = "${var.us_west_2_azs["a"]}"
+resource "aws_subnet" "public" {
+  count = "${length(var.availability_zones[var.aws_region])}"
+
+  vpc_id = "${aws_vpc.resource.id}"
+  cidr_block = "${element(var.public_subnet_cidrs, count.index)}"
+  availability_zone = "${element(var.availability_zones[var.aws_region], count.index)}"
 
   tags {
-    Name = "cwc-public-subnet-2a"
-  }
-}
-
-resource "aws_subnet" "ap-southeast-2b-public" {
-  vpc_id = "${aws_vpc.cwc-dev.id}"
-  cidr_block = "${var.public_subnet_cidrs["b"]}"
-  availability_zone = "${var.us_west_2_azs["b"]}"
-
-  tags {
-    Name = "cwc-public-subnet-2b"
+    Name = "${var.vpc_name}-public-${element(var.availability_zones[var.aws_region], count.index)}"
   }
 }
 
@@ -84,29 +57,27 @@ resource "aws_subnet" "ap-southeast-2b-public" {
 # Add a public gateway to the public route table and associate the two public subnets.
 # ---------------------------------------------------------------------------------------------------------------------
 
-resource "aws_route_table" "cwc-route-table-public" {
-  vpc_id = "${aws_vpc.cwc-dev.id}"
+resource "aws_route_table" "public" {
+  vpc_id = "${aws_vpc.resource.id}"
 
   tags {
-    Name = "cwc-route-table-public"
+    Name = "${var.vpc_name}-public-rt"
   }
 }
 
-resource "aws_route" "cwc-public-igw-route" {
-  route_table_id = "${aws_route_table.cwc-route-table-public.id}"
-  depends_on = ["aws_route_table.cwc-route-table-public"]
+resource "aws_route" "public" {
+  depends_on = ["aws_route_table.public"]
+  route_table_id = "${aws_route_table.public.id}"
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id = "${aws_internet_gateway.cwc-igw.id}"
+  gateway_id = "${aws_internet_gateway.resource.id}"
 }
 
-resource "aws_route_table_association" "ap-southeast-2a-public" {
-  subnet_id = "${aws_subnet.ap-southeast-2a-public.id}"
-  route_table_id = "${aws_route_table.cwc-route-table-public.id}"
-}
+resource "aws_route_table_association" "public" {
+  depends_on = ["aws_subnet.public"]
+  count = "${aws_subnet.public.count}"
 
-resource "aws_route_table_association" "ap-southeast-2b-public" {
-  subnet_id = "${aws_subnet.ap-southeast-2b-public.id}"
-  route_table_id = "${aws_route_table.cwc-route-table-public.id}"
+  subnet_id = "${element(aws_subnet.public.*.id, count.index)}"
+  route_table_id = "${aws_route_table.public.id}"
 }
 
 
@@ -114,23 +85,15 @@ resource "aws_route_table_association" "ap-southeast-2b-public" {
 # PRIVATE SUBNETS
 # ---------------------------------------------------------------------------------------------------------------------
 
-resource "aws_subnet" "ap-southeast-2a-private" {
-  vpc_id = "${aws_vpc.cwc-dev.id}"
-  cidr_block = "${var.private_subnet_cidrs["a"]}"
-  availability_zone = "${var.us_west_2_azs["a"]}"
+resource "aws_subnet" "private" {
+  count = "${length(var.availability_zones[var.aws_region])}"
+
+  vpc_id = "${aws_vpc.resource.id}"
+  cidr_block = "${element(var.private_subnet_cidrs, count.index)}"
+  availability_zone = "${element(var.availability_zones[var.aws_region], count.index)}"
 
   tags {
-    Name = "cwc-private-subnet-2a"
-  }
-}
-
-resource "aws_subnet" "ap-southeast-2b-private" {
-  vpc_id = "${aws_vpc.cwc-dev.id}"
-  cidr_block = "${var.private_subnet_cidrs["b"]}"
-  availability_zone = "${var.us_west_2_azs["b"]}"
-
-  tags {
-    Name = "cwc-private-subnet-2b"
+    Name = "${var.vpc_name}-private-${element(var.availability_zones[var.aws_region], count.index)}"
   }
 }
 
@@ -140,27 +103,43 @@ resource "aws_subnet" "ap-southeast-2b-private" {
 # Add a the NAT gateway to the private route table and associate the two private subnets.
 # ---------------------------------------------------------------------------------------------------------------------
 
-resource "aws_route_table" "cwc-route-table-private" {
-  vpc_id = "${aws_vpc.cwc-dev.id}"
+resource "aws_route_table" "private" {
+  vpc_id = "${aws_vpc.resource.id}"
 
   tags {
-    Name = "cwc-route-table-private"
+    Name = "${var.vpc_name}-private-rt"
   }
 }
 
-resource "aws_route" "cwc-private-ngw-route" {
-  route_table_id = "${aws_route_table.cwc-route-table-private.id}"
-  depends_on = ["aws_route_table.cwc-route-table-private"]
+resource "aws_route" "private" {
+  depends_on = ["aws_route_table.private"]
+  route_table_id = "${aws_route_table.private.id}"
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id = "${aws_nat_gateway.cwc-ngw.id}"
+  nat_gateway_id = "${aws_nat_gateway.resource.id}"
 }
 
-resource "aws_route_table_association" "ap-southeast-2a-private" {
-  subnet_id = "${aws_subnet.ap-southeast-2a-private.id}"
-  route_table_id = "${aws_route_table.cwc-route-table-private.id}"
+resource "aws_route_table_association" "private" {
+  depends_on = ["aws_subnet.private"]
+  count = "${aws_subnet.private.count}"
+
+  subnet_id = "${element(aws_subnet.private.*.id, count.index)}"
+  route_table_id = "${aws_route_table.private.id}"
 }
 
-resource "aws_route_table_association" "ap-southeast-2b-private" {
-  subnet_id = "${aws_subnet.ap-southeast-2b-private.id}"
-  route_table_id = "${aws_route_table.cwc-route-table-private.id}"
+# ---------------------------------------------------------------------------------------------------------------------
+# NAT GATEWAY
+# Includes the required creation of an Elastic IP.
+# ---------------------------------------------------------------------------------------------------------------------
+
+resource "aws_eip" "resource" {
+  vpc = true
+}
+
+resource "aws_nat_gateway" "resource" {
+  allocation_id = "${aws_eip.resource.id}"
+  subnet_id     = "${aws_subnet.public.0.id}"
+
+  tags {
+    Name = "${var.vpc_name}-ngw"
+  }
 }

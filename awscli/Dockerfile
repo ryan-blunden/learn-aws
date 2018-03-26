@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 RUN apt-get update && \
     apt-get upgrade -y  && \
-    apt-get install -y --no-install-recommends jq less && \
+    apt-get install -y --no-install-recommends jq less groff && \
     rm -rf /var/lib/apt/lists/*
 
 COPY Pipfile Pipfile
