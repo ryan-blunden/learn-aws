@@ -2,14 +2,17 @@ IMAGE_NAME=rabbitbird/terraform
 VERSION=1.0
 WORKDIR=/usr/src/app
 
+exec:
+	docker container run --rm -it -v $(CURDIR):/usr/src/app $(IMAGE_NAME):$(VERSION) $(CMD)
+
 init:
-	docker container run --rm -it -v $(CURDIR):/usr/src/app $(IMAGE_NAME):$(VERSION) terraform init
+	$(MAKE) exec CMD="terraform init"
 
 plan:
-	docker container run --rm -it -v $(CURDIR):/usr/src/app $(IMAGE_NAME):$(VERSION) terraform plan -var-file terraform.tfvars
+	$(MAKE) exec CMD="terraform plan -var-file terraform.tfvars"
 
 apply:
-	docker container run --rm -it -v $(CURDIR):/usr/src/app $(IMAGE_NAME):$(VERSION) terraform apply -auto-approve -var-file terraform.tfvars
+	$(MAKE) exec CMD="terraform apply -auto-approve -var-file terraform.tfvars"
 
 destroy:
-	docker container run --rm -it -v $(CURDIR):/usr/src/app $(IMAGE_NAME):$(VERSION) terraform destroy -force -var-file terraform.tfvars
+	$(MAKE) exec CMD="terraform destroy -force -var-file terraform.tfvars"
