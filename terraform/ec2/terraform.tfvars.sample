@@ -8,4 +8,5 @@ instance_name = ""
 key_name = ""
 instance_type = ""
 ami_id = ""
+has_public_ip = false
 security_group_name = ""

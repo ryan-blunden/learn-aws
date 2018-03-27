@@ -31,6 +31,7 @@ resource "aws_instance" "resource" {
   vpc_security_group_ids = ["${aws_security_group.resource.id}"]
   subnet_id = "${var.subnet_id}"
   key_name = "${var.key_name}"
+  associate_public_ip_address = "${var.has_public_ip}"
 
   user_data = <<-EOF
               # Update System
