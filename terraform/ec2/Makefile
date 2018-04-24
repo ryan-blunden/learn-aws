@@ -3,7 +3,7 @@ VERSION=1.0
 WORKDIR=/usr/src/app
 
 exec:
-	docker container run --rm -it -v $(CURDIR):/usr/src/app $(IMAGE_NAME):$(VERSION) $(CMD)
+	docker container run --rm -it -v "$(CURDIR)":/usr/src/app $(IMAGE_NAME):$(VERSION) $(CMD)
 
 init:
 	$(MAKE) exec CMD="terraform init"

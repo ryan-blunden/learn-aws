@@ -43,7 +43,14 @@ aws ec2 authorize-security-group-ingress \
     --group-id ${SECURITY_GROUP_ID} \
     --protocol tcp \
     --port 22 \
-    --cidr ${YOUR_IP}/32
+    --cidr ${YOUR_IP}
+
+aws ec2 authorize-security-group-egress \
+    --group-id ${SECURITY_GROUP_ID} \
+    --protocol tcp \
+    --port 0-65535 \
+    --cidr 0.0.0.0/0
+    
 
 echo "[info]: Configuring EC2 instance."
 
@@ -59,7 +66,7 @@ read AMI_ID
 echo "Subnet ID: "
 read SUBNET_ID
 
-echo "Key Pair name: "
+echo "Key Pair name (must already exist): "
 read KEY_PAIR_NAME
 
 echo -e "[info]: Making request to launch instance. Result payload will display once complete.\n"
