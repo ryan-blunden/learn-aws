@@ -9,10 +9,6 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends wget && \
     rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends wget && \
-    rm -rf /var/lib/apt/lists/*
-
 ARG DYNAMO_URL="https://s3-us-west-2.amazonaws.com/dynamodb-local/dynamodb_local_latest.tar.gz"
 ARG DYNAMO_CHECKSUM_URL="https://s3-us-west-2.amazonaws.com/dynamodb-local/dynamodb_local_latest.tar.gz.sha256"
 
