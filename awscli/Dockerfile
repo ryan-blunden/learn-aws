@@ -7,12 +7,11 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends jq less groff && \
     rm -rf /var/lib/apt/lists/*
 
-COPY Pipfile Pipfile
+COPY requirements.txt .
 
 RUN ln -s /usr/local/bin/python /bin/python && \
     pip install pip setuptools --upgrade && \
-    pip install pipenv && \
-    pipenv install --deploy --system
+    pip install -r requirements.txt
 
 COPY bin bin
 
