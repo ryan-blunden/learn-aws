@@ -134,8 +134,8 @@
         "RegionName": "us-west-1",
         "ConsoleName": "US West (N. California)",
         "AvailabilityZones": [
-            "us-west-1b",
-            "us-west-1c"
+            "us-west-1a",
+            "us-west-1b"
         ]
     },
     {
