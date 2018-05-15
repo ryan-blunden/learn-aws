@@ -3,7 +3,7 @@ aws_secret_key = ""
 aws_region = ""
 
 vpc_id = ""
-subnet_id = ""
+subnet_ids = [""]
 instance_name = ""
 key_name = ""
 instance_type = ""

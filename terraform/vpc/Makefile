@@ -16,3 +16,6 @@ apply:
 
 destroy:
 	$(MAKE) exec CMD="terraform destroy -force -var-file terraform.tfvars"
+
+output:
+	$(MAKE) exec CMD="terraform output"

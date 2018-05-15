@@ -26,10 +26,12 @@ resource "aws_security_group" "resource" {
 }
 
 resource "aws_instance" "resource" {
+  count = "${length(var.subnet_ids)}"
+
   ami = "${var.ami_id}"
   instance_type = "${var.instance_type}"
   vpc_security_group_ids = ["${aws_security_group.resource.id}"]
-  subnet_id = "${var.subnet_id}"
+  subnet_id = "${element(var.subnet_ids, count.index)}"
   key_name = "${var.key_name}"
   associate_public_ip_address = "${var.has_public_ip}"
 
