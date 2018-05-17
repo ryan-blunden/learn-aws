@@ -1,1 +1,3 @@
+awscli
+boto3
 chalice

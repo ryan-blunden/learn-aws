@@ -9,4 +9,4 @@ run: build
 	docker run --rm -it $(IMAGE_NAME):$(VERSION)
 
 dev: build
-	docker run --rm -it -v "$(CURDIR)":$(WORKDIR) $(IMAGE_NAME):$(VERSION) bash
+	docker run --rm -it -p 8000:8000 -v "$(CURDIR)":$(WORKDIR) $(IMAGE_NAME):$(VERSION)
