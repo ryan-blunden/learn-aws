@@ -1,5 +1,5 @@
 IMAGE_NAME=rabbitbird/awscli
-VERSION=1.0
+VERSION=latest
 WORKDIR=/usr/src/app
 
 build:
