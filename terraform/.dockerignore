@@ -1,7 +1,0 @@
-.terraform
-Dockerfile
-Makefile
-terraform.tfstate
-*.tf
-ec2
-vpc

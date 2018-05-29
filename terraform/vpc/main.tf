@@ -1,12 +1,12 @@
-# ---------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------
 # DATA SOURCES
-# ---------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------
 
 data "aws_availability_zones" "available" {}
 
-# ---------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------
 # VPC
-# ---------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------
 
 resource "aws_vpc" "resource" {
   cidr_block = "${var.vpc_cidr}"
@@ -28,9 +28,9 @@ resource "aws_default_route_table" "resource" {
 }
 
 
-# ---------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------
 # INTERNET GATEWAY
-# ---------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------
 
 resource "aws_internet_gateway" "resource" {
   vpc_id = "${aws_vpc.resource.id}"
@@ -41,9 +41,11 @@ resource "aws_internet_gateway" "resource" {
 }
 
 
-# ---------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------
 # PUBLIC SUBNETS
-# ---------------------------------------------------------------------------------------------------------------------
+#
+# Create a subnet for every AZ.
+# ------------------------------------------
 
 resource "aws_subnet" "public" {
   count = "${length(data.aws_availability_zones.available.names)}"
@@ -51,6 +53,7 @@ resource "aws_subnet" "public" {
   vpc_id = "${aws_vpc.resource.id}"
   cidr_block = "${element(var.public_subnet_cidrs, count.index)}"
   availability_zone = "${element(data.aws_availability_zones.available.names, count.index)}"
+  map_public_ip_on_launch = true
 
   tags {
     Name = "${var.vpc_name}-public-${element(data.aws_availability_zones.available.names, count.index)}"
@@ -58,10 +61,11 @@ resource "aws_subnet" "public" {
 }
 
 
-# ---------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------
 # ROUTE TABLE FOR PUBLIC SUBNETS
+#
 # Add a public gateway to the public route table and associate the two public subnets.
-# ---------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------
 
 resource "aws_route_table" "public" {
   vpc_id = "${aws_vpc.resource.id}"
@@ -87,9 +91,11 @@ resource "aws_route_table_association" "public" {
 }
 
 
-# ---------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------
 # PRIVATE SUBNETS
-# ---------------------------------------------------------------------------------------------------------------------
+#
+# Create a subnet for every AZ.
+# ------------------------------------------
 
 resource "aws_subnet" "private" {
   count = "${length(data.aws_availability_zones.available.names)}"
@@ -97,6 +103,7 @@ resource "aws_subnet" "private" {
   vpc_id = "${aws_vpc.resource.id}"
   cidr_block = "${element(var.private_subnet_cidrs, count.index)}"
   availability_zone = "${element(data.aws_availability_zones.available.names, count.index)}"
+  map_public_ip_on_launch = false
 
   tags {
     Name = "${var.vpc_name}-private-${element(data.aws_availability_zones.available.names, count.index)}"
@@ -104,10 +111,11 @@ resource "aws_subnet" "private" {
 }
 
 
-# ---------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------
 # ROUTE TABLE FOR PRIVATE SUBNETS
+#
 # Add a the NAT gateway to the private route table and associate the two private subnets.
-# ---------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------
 
 resource "aws_route_table" "private" {
   vpc_id = "${aws_vpc.resource.id}"
@@ -132,10 +140,11 @@ resource "aws_route_table_association" "private" {
   route_table_id = "${aws_route_table.private.id}"
 }
 
-# ---------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------
 # NAT GATEWAY
+#
 # Includes the required creation of an Elastic IP.
-# ---------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------
 
 resource "aws_eip" "resource" {
   vpc = true
