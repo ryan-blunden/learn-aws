@@ -2,6 +2,10 @@ IMAGE_NAME=rabbitbird/terraform
 VERSION=1.0
 WORKDIR=/usr/src/app
 
+build:
+	cd ../ && $(MAKE) clean
+	cd ../ && $(MAKE) build
+
 exec:
 	docker container run --rm -it -v "$(CURDIR)":/usr/src/app $(IMAGE_NAME):$(VERSION) $(CMD)
 

@@ -1,4 +1,10 @@
 # ---------------------------------------------------------------------------------------------------------------------
+# DATA SOURCES
+# ---------------------------------------------------------------------------------------------------------------------
+
+data "aws_availability_zones" "available" {}
+
+# ---------------------------------------------------------------------------------------------------------------------
 # VPC
 # ---------------------------------------------------------------------------------------------------------------------
 
@@ -40,14 +46,14 @@ resource "aws_internet_gateway" "resource" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_subnet" "public" {
-  count = "${length(var.availability_zones[var.aws_region])}"
+  count = "${length(data.aws_availability_zones.available.names)}"
 
   vpc_id = "${aws_vpc.resource.id}"
   cidr_block = "${element(var.public_subnet_cidrs, count.index)}"
-  availability_zone = "${element(var.availability_zones[var.aws_region], count.index)}"
+  availability_zone = "${element(data.aws_availability_zones.available.names, count.index)}"
 
   tags {
-    Name = "${var.vpc_name}-public-${element(var.availability_zones[var.aws_region], count.index)}"
+    Name = "${var.vpc_name}-public-${element(data.aws_availability_zones.available.names, count.index)}"
   }
 }
 
@@ -86,14 +92,14 @@ resource "aws_route_table_association" "public" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_subnet" "private" {
-  count = "${length(var.availability_zones[var.aws_region])}"
+  count = "${length(data.aws_availability_zones.available.names)}"
 
   vpc_id = "${aws_vpc.resource.id}"
   cidr_block = "${element(var.private_subnet_cidrs, count.index)}"
-  availability_zone = "${element(var.availability_zones[var.aws_region], count.index)}"
+  availability_zone = "${element(data.aws_availability_zones.available.names, count.index)}"
 
   tags {
-    Name = "${var.vpc_name}-private-${element(var.availability_zones[var.aws_region], count.index)}"
+    Name = "${var.vpc_name}-private-${element(data.aws_availability_zones.available.names, count.index)}"
   }
 }
 
