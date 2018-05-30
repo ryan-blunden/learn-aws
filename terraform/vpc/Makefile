@@ -1,5 +1,5 @@
 init:
-	"$(MAKE)" exec CMD="terraform init"
+	cd ../ && "$(MAKE)" exec CMD="terraform init"
 
 plan:
 	cd ../ && "$(MAKE)" exec TERRAFORM_MODULE="$(CURDIR)" CMD="terraform plan -var-file terraform.tfvars"
