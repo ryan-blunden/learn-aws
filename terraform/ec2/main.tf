@@ -41,7 +41,6 @@ resource "aws_instance" "resource" {
   vpc_security_group_ids = ["${aws_security_group.resource.id}"]
   subnet_id = "${element(var.subnet_ids, count.index)}"
   key_name = "${var.key_name}"
-  associate_public_ip_address = "${var.has_public_ip}"
 
   user_data = "${file("user-data.sh")}"
 
