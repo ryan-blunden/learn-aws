@@ -27,6 +27,10 @@ resource "aws_security_group" "resource" {
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags {
+    Name = "${var.security_group_name}"
+  }
 }
 
 # ------------------------------------------
@@ -41,6 +45,7 @@ resource "aws_instance" "resource" {
   vpc_security_group_ids = ["${aws_security_group.resource.id}"]
   subnet_id = "${element(var.subnet_ids, count.index)}"
   key_name = "${var.key_name}"
+  iam_instance_profile = "iam-role-ec2-sample"
 
   user_data = "${file("user-data.sh")}"
 
