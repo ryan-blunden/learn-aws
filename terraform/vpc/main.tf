@@ -92,21 +92,47 @@ resource "aws_route_table_association" "public" {
 
 
 # ------------------------------------------
-# PRIVATE SUBNETS
+# PRIVATE APP SUBNETS
 #
-# Create a subnet for every AZ.
+# Create an Application, RDS and ElastiCache subnet for every AZ.
 # ------------------------------------------
 
-resource "aws_subnet" "private" {
+resource "aws_subnet" "private_app" {
   count = "${length(data.aws_availability_zones.available.names)}"
 
   vpc_id = "${aws_vpc.resource.id}"
-  cidr_block = "${element(var.private_subnet_cidrs, count.index)}"
+  cidr_block = "${element(var.private_app_subnet_cidrs, count.index)}"
   availability_zone = "${element(data.aws_availability_zones.available.names, count.index)}"
   map_public_ip_on_launch = false
 
   tags {
-    Name = "${var.vpc_name}-private-${element(data.aws_availability_zones.available.names, count.index)}"
+    Name = "${var.vpc_name}-private-app-${element(data.aws_availability_zones.available.names, count.index)}"
+  }
+}
+
+resource "aws_subnet" "private_rds" {
+  count = "${length(data.aws_availability_zones.available.names)}"
+
+  vpc_id = "${aws_vpc.resource.id}"
+  cidr_block = "${element(var.private_rds_subnet_cidrs, count.index)}"
+  availability_zone = "${element(data.aws_availability_zones.available.names, count.index)}"
+  map_public_ip_on_launch = false
+
+  tags {
+    Name = "${var.vpc_name}-private-rds-${element(data.aws_availability_zones.available.names, count.index)}"
+  }
+}
+
+resource "aws_subnet" "private_elasticache" {
+  count = "${length(data.aws_availability_zones.available.names)}"
+
+  vpc_id = "${aws_vpc.resource.id}"
+  cidr_block = "${element(var.private_elasticache_subnet_cidrs, count.index)}"
+  availability_zone = "${element(data.aws_availability_zones.available.names, count.index)}"
+  map_public_ip_on_launch = false
+
+  tags {
+    Name = "${var.vpc_name}-private-elasticache-${element(data.aws_availability_zones.available.names, count.index)}"
   }
 }
 
@@ -132,11 +158,27 @@ resource "aws_route" "private" {
   nat_gateway_id = "${aws_nat_gateway.resource.id}"
 }
 
-resource "aws_route_table_association" "private" {
-  depends_on = ["aws_subnet.private"]
-  count = "${aws_subnet.private.count}"
+resource "aws_route_table_association" "private_app" {
+  depends_on = ["aws_subnet.private_rds"]
+  count = "${aws_subnet.private_app.count}"
 
-  subnet_id = "${element(aws_subnet.private.*.id, count.index)}"
+  subnet_id = "${element(aws_subnet.private_app.*.id, count.index)}"
+  route_table_id = "${aws_route_table.private.id}"
+}
+
+resource "aws_route_table_association" "private_rds" {
+  depends_on = ["aws_subnet.private_rds"]
+  count = "${aws_subnet.private_rds.count}"
+
+  subnet_id = "${element(aws_subnet.private_rds.*.id, count.index)}"
+  route_table_id = "${aws_route_table.private.id}"
+}
+
+resource "aws_route_table_association" "private_elasticache" {
+  depends_on = ["aws_subnet.private_elasticache"]
+  count = "${aws_subnet.private_elasticache.count}"
+
+  subnet_id = "${element(aws_subnet.private_elasticache.*.id, count.index)}"
   route_table_id = "${aws_route_table.private.id}"
 }
 

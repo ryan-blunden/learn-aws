@@ -14,9 +14,23 @@ output "public_subnets" {
 }
 
 
-output "private_subnets" {
+output "private_app_subnets" {
   value = [{
-    id = "${aws_subnet.private.*.id}",
-    name = "${aws_subnet.private.*.tags.Name}"
+    id = "${aws_subnet.private_app.*.id}",
+    name = "${aws_subnet.private_app.*.tags.Name}"
+  }]
+}
+
+output "private_rds_subnets" {
+  value = [{
+    id = "${aws_subnet.private_app.*.id}",
+    name = "${aws_subnet.private_app.*.tags.Name}"
+  }]
+}
+
+output "private_elasticache_subnets" {
+  value = [{
+    id = "${aws_subnet.private_app.*.id}",
+    name = "${aws_subnet.private_app.*.tags.Name}"
   }]
 }
