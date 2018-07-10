@@ -3,7 +3,8 @@ VERSION=1.0
 WORKDIR=/usr/src/app
 
 build:
-	docker image build -t $(IMAGE_NAME):$(VERSION) .
+	docker image pull amazonlinux:latest
+	docker image build -t $(IMAGE_NAME):$(VERSION) -t $(IMAGE_NAME):latest .
 
 run: build
 	docker container run --rm -it $(IMAGE_NAME):$(VERSION)

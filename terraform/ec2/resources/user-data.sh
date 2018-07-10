@@ -22,12 +22,9 @@ ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 service docker start
 
 # Install the memory and disk monitoring metrics and send to Cloud Watch
-#
-# Not quire ready yet.
-#
-#sudo yum install perl-Switch perl-DateTime perl-Sys-Syslog perl-LWP-Protocol-https -y
-#curl https://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.2.zip -O
-#unzip CloudWatchMonitoringScripts-1.2.2.zip
-#rm CloudWatchMonitoringScripts-1.2.2.zip
-#cd aws-scripts-mon
-#(crontab -l && echo "*/5 * * * * ~/aws-scripts-mon/mon-put-instance-data.pl --mem-used-incl-cache-buff --mem-util --disk-space-util --disk-path=/ --from-cron") | crontab -
+yum install perl-Switch perl-DateTime perl-Sys-Syslog perl-LWP-Protocol-https -y
+curl https://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringScripts-1.2.2.zip -O
+unzip CloudWatchMonitoringScripts-1.2.2.zip
+rm CloudWatchMonitoringScripts-1.2.2.zip
+cd aws-scripts-mon
+(crontab -l && echo "*/5 * * * * /aws-scripts-mon/mon-put-instance-data.pl --mem-used-incl-cache-buff --mem-util --disk-space-util --disk-path=/ --from-cron") | crontab -

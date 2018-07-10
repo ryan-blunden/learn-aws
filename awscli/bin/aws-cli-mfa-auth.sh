@@ -48,4 +48,8 @@ export AWS_SECRET_ACCESS_KEY=$(echo $results | jq -r '.Credentials.SecretAccessK
 export AWS_SESSION_TOKEN=$(echo $results | jq -r '.Credentials.SessionToken')
 export AWS_SESSION_EXPIRE=$(echo $results | jq -r '.Credentials.Expiration')
 
+echo "AWS_ACCESS_KEY_ID=$(echo $results | jq -r '.Credentials.AccessKeyId')"
+echo "AWS_SECRET_ACCESS_KEY=$(echo $results | jq -r '.Credentials.SecretAccessKey')"
+echo "AWS_SESSION_TOKEN=$(echo $results | jq -r '.Credentials.SessionToken')"
+
 echo "[info]: Successfully authenticated"

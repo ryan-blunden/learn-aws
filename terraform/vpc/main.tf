@@ -8,8 +8,8 @@ data "aws_availability_zones" "available" {}
 # VPC
 # ------------------------------------------
 
-resource "aws_vpc" "resource" {
-  cidr_block = "${var.vpc_cidr}"
+resource "aws_vpc" "this" {
+  cidr_block           = "${var.vpc_cidr}"
   enable_dns_hostnames = true
 
   tags {
@@ -19,27 +19,25 @@ resource "aws_vpc" "resource" {
 
 # We don't use the "Main" route table to avoid confusion with implicitly assigned subnets.
 # Exolicit is better than implicit.
-resource "aws_default_route_table" "resource" {
-  default_route_table_id = "${aws_vpc.resource.default_route_table_id}"
+resource "aws_default_route_table" "this" {
+  default_route_table_id = "${aws_vpc.this.default_route_table_id}"
 
   tags {
     Name = "${var.vpc_name}-ig-main-route-table-not-used"
   }
 }
 
-
 # ------------------------------------------
 # INTERNET GATEWAY
 # ------------------------------------------
 
-resource "aws_internet_gateway" "resource" {
-  vpc_id = "${aws_vpc.resource.id}"
+resource "aws_internet_gateway" "this" {
+  vpc_id = "${aws_vpc.this.id}"
 
   tags {
     Name = "${var.vpc_name}-ig"
   }
 }
-
 
 # ------------------------------------------
 # PUBLIC SUBNETS
@@ -50,16 +48,15 @@ resource "aws_internet_gateway" "resource" {
 resource "aws_subnet" "public" {
   count = "${length(data.aws_availability_zones.available.names)}"
 
-  vpc_id = "${aws_vpc.resource.id}"
-  cidr_block = "${element(var.public_subnet_cidrs, count.index)}"
-  availability_zone = "${element(data.aws_availability_zones.available.names, count.index)}"
+  vpc_id                  = "${aws_vpc.this.id}"
+  cidr_block              = "${element(var.public_subnet_cidrs, count.index)}"
+  availability_zone       = "${element(data.aws_availability_zones.available.names, count.index)}"
   map_public_ip_on_launch = true
 
   tags {
     Name = "${var.vpc_name}-public-${element(data.aws_availability_zones.available.names, count.index)}"
   }
 }
-
 
 # ------------------------------------------
 # ROUTE TABLE FOR PUBLIC SUBNETS
@@ -68,7 +65,7 @@ resource "aws_subnet" "public" {
 # ------------------------------------------
 
 resource "aws_route_table" "public" {
-  vpc_id = "${aws_vpc.resource.id}"
+  vpc_id = "${aws_vpc.this.id}"
 
   tags {
     Name = "${var.vpc_name}-public-rt"
@@ -76,20 +73,19 @@ resource "aws_route_table" "public" {
 }
 
 resource "aws_route" "public" {
-  depends_on = ["aws_route_table.public"]
-  route_table_id = "${aws_route_table.public.id}"
+  depends_on             = ["aws_route_table.public"]
+  route_table_id         = "${aws_route_table.public.id}"
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id = "${aws_internet_gateway.resource.id}"
+  gateway_id             = "${aws_internet_gateway.this.id}"
 }
 
 resource "aws_route_table_association" "public" {
   depends_on = ["aws_subnet.public"]
-  count = "${aws_subnet.public.count}"
+  count      = "${aws_subnet.public.count}"
 
-  subnet_id = "${element(aws_subnet.public.*.id, count.index)}"
+  subnet_id      = "${element(aws_subnet.public.*.id, count.index)}"
   route_table_id = "${aws_route_table.public.id}"
 }
-
 
 # ------------------------------------------
 # PRIVATE APP SUBNETS
@@ -100,9 +96,9 @@ resource "aws_route_table_association" "public" {
 resource "aws_subnet" "private_app" {
   count = "${length(data.aws_availability_zones.available.names)}"
 
-  vpc_id = "${aws_vpc.resource.id}"
-  cidr_block = "${element(var.private_app_subnet_cidrs, count.index)}"
-  availability_zone = "${element(data.aws_availability_zones.available.names, count.index)}"
+  vpc_id                  = "${aws_vpc.this.id}"
+  cidr_block              = "${element(var.private_app_subnet_cidrs, count.index)}"
+  availability_zone       = "${element(data.aws_availability_zones.available.names, count.index)}"
   map_public_ip_on_launch = false
 
   tags {
@@ -113,9 +109,9 @@ resource "aws_subnet" "private_app" {
 resource "aws_subnet" "private_rds" {
   count = "${length(data.aws_availability_zones.available.names)}"
 
-  vpc_id = "${aws_vpc.resource.id}"
-  cidr_block = "${element(var.private_rds_subnet_cidrs, count.index)}"
-  availability_zone = "${element(data.aws_availability_zones.available.names, count.index)}"
+  vpc_id                  = "${aws_vpc.this.id}"
+  cidr_block              = "${element(var.private_rds_subnet_cidrs, count.index)}"
+  availability_zone       = "${element(data.aws_availability_zones.available.names, count.index)}"
   map_public_ip_on_launch = false
 
   tags {
@@ -126,16 +122,15 @@ resource "aws_subnet" "private_rds" {
 resource "aws_subnet" "private_elasticache" {
   count = "${length(data.aws_availability_zones.available.names)}"
 
-  vpc_id = "${aws_vpc.resource.id}"
-  cidr_block = "${element(var.private_elasticache_subnet_cidrs, count.index)}"
-  availability_zone = "${element(data.aws_availability_zones.available.names, count.index)}"
+  vpc_id                  = "${aws_vpc.this.id}"
+  cidr_block              = "${element(var.private_elasticache_subnet_cidrs, count.index)}"
+  availability_zone       = "${element(data.aws_availability_zones.available.names, count.index)}"
   map_public_ip_on_launch = false
 
   tags {
     Name = "${var.vpc_name}-private-elasticache-${element(data.aws_availability_zones.available.names, count.index)}"
   }
 }
-
 
 # ------------------------------------------
 # ROUTE TABLE FOR PRIVATE SUBNETS
@@ -144,7 +139,7 @@ resource "aws_subnet" "private_elasticache" {
 # ------------------------------------------
 
 resource "aws_route_table" "private" {
-  vpc_id = "${aws_vpc.resource.id}"
+  vpc_id = "${aws_vpc.this.id}"
 
   tags {
     Name = "${var.vpc_name}-private-rt"
@@ -152,33 +147,33 @@ resource "aws_route_table" "private" {
 }
 
 resource "aws_route" "private" {
-  depends_on = ["aws_route_table.private"]
-  route_table_id = "${aws_route_table.private.id}"
+  depends_on             = ["aws_route_table.private"]
+  route_table_id         = "${aws_route_table.private.id}"
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id = "${aws_nat_gateway.resource.id}"
+  nat_gateway_id         = "${aws_nat_gateway.this.id}"
 }
 
 resource "aws_route_table_association" "private_app" {
   depends_on = ["aws_subnet.private_rds"]
-  count = "${aws_subnet.private_app.count}"
+  count      = "${aws_subnet.private_app.count}"
 
-  subnet_id = "${element(aws_subnet.private_app.*.id, count.index)}"
+  subnet_id      = "${element(aws_subnet.private_app.*.id, count.index)}"
   route_table_id = "${aws_route_table.private.id}"
 }
 
 resource "aws_route_table_association" "private_rds" {
   depends_on = ["aws_subnet.private_rds"]
-  count = "${aws_subnet.private_rds.count}"
+  count      = "${aws_subnet.private_rds.count}"
 
-  subnet_id = "${element(aws_subnet.private_rds.*.id, count.index)}"
+  subnet_id      = "${element(aws_subnet.private_rds.*.id, count.index)}"
   route_table_id = "${aws_route_table.private.id}"
 }
 
 resource "aws_route_table_association" "private_elasticache" {
   depends_on = ["aws_subnet.private_elasticache"]
-  count = "${aws_subnet.private_elasticache.count}"
+  count      = "${aws_subnet.private_elasticache.count}"
 
-  subnet_id = "${element(aws_subnet.private_elasticache.*.id, count.index)}"
+  subnet_id      = "${element(aws_subnet.private_elasticache.*.id, count.index)}"
   route_table_id = "${aws_route_table.private.id}"
 }
 
@@ -188,12 +183,12 @@ resource "aws_route_table_association" "private_elasticache" {
 # Includes the required creation of an Elastic IP.
 # ------------------------------------------
 
-resource "aws_eip" "resource" {
+resource "aws_eip" "this" {
   vpc = true
 }
 
-resource "aws_nat_gateway" "resource" {
-  allocation_id = "${aws_eip.resource.id}"
+resource "aws_nat_gateway" "this" {
+  allocation_id = "${aws_eip.this.id}"
   subnet_id     = "${aws_subnet.public.0.id}"
 
   tags {

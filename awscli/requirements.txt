@@ -1,2 +1,3 @@
-awscli
 boto3
+awscli
+aws-shell
