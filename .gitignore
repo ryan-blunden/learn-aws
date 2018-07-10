@@ -7,3 +7,4 @@ terraform.tfstate
 terraform.tfstate.backup
 terraform.tfvars
 build
+s3/local-server/data

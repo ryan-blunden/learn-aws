@@ -1,0 +1,3 @@
+# README
+
+Run DynamoDB locally.
