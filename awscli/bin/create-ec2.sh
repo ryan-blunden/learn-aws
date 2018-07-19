@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # To find the list of Amazon Liunx AMI IDs for each region, go to
-# https://aws.amazon.com/amazon-linux-ami/#Amazon_Linux_AMI_IDs
+# https://aws.amazon.com/amazon-linux-2/release-notes/
 
 echo "[info]: Creating Security Group."
 

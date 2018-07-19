@@ -17,8 +17,7 @@ public_key = ""
 instance_type = ""
 
 # To find the list of Amazon Liunx AMI IDs for each region, go to
-# https://aws.amazon.com/amazon-linux-ami/#Amazon_Linux_AMI_IDs
-# For AWS Linux V2 - https://aws.amazon.com/amazon-linux-2/release-notes/
+# https://aws.amazon.com/amazon-linux-2/release-notes/
 ami_id = ""
 
 security_group_name = ""
