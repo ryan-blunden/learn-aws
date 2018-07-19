@@ -1,0 +1,276 @@
+[
+    {
+        "region": "us-gov-west-1",
+        "amis": [
+            {
+                "id": "ami-7e7aea1f",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-ebs"
+            },
+            {
+                "id": "ami-3b48d85a",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-gp2"
+            },
+            "ami-2261f143 amzn2-ami-minimal-hvm-2.0.20180622.1-x86_64-ebs"
+        ]
+    },
+    {
+        "region": "cn-north-1",
+        "amis": [
+            {
+                "id": "ami-7fd70e12",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-ebs"
+            },
+            {
+                "id": "ami-ffd00992",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-gp2"
+            },
+            "ami-fed00993 amzn2-ami-minimal-hvm-2.0.20180622.1-x86_64-ebs"
+        ]
+    },
+    {
+        "region": "cn-northwest-1",
+        "amis": [
+            {
+                "id": "ami-955d4af7",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-ebs"
+            },
+            {
+                "id": "ami-965d4af4",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-gp2"
+            },
+            "ami-015d4a63 amzn2-ami-minimal-hvm-2.0.20180622.1-x86_64-ebs"
+        ]
+    },
+    {
+        "region": "ap-northeast-1",
+        "amis": [
+            {
+                "id": "ami-ef9e4990",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-ebs"
+            },
+            {
+                "id": "ami-e99f4896",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-gp2"
+            },
+            "ami-f89f4887 amzn2-ami-minimal-hvm-2.0.20180622.1-x86_64-ebs"
+        ]
+    },
+    {
+        "region": "ap-northeast-2",
+        "amis": [
+            {
+                "id": "ami-66c67308",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-ebs"
+            },
+            {
+                "id": "ami-afd86dc1",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-gp2"
+            },
+            "ami-add86dc3 amzn2-ami-minimal-hvm-2.0.20180622.1-x86_64-ebs"
+        ]
+    },
+    {
+        "region": "ap-northeast-3",
+        "amis": [
+            {
+                "id": "ami-34b8b649",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-ebs"
+            },
+            {
+                "id": "ami-32b8b64f",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-gp2"
+            },
+            "ami-33b8b64e amzn2-ami-minimal-hvm-2.0.20180622.1-x86_64-ebs"
+        ]
+    },
+    {
+        "region": "ap-south-1",
+        "amis": [
+            {
+                "id": "ami-2c81ab43",
+                "type": "amzn2-ami-graphics-hvm-2.0.20180622.1-x86_64-gp2"
+            },
+            {
+                "id": "ami-cf82a8a0",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-ebs"
+            },
+            {
+                "id": "ami-d783a9b8",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-gp2"
+            },
+            "ami-a681abc9 amzn2-ami-minimal-hvm-2.0.20180622.1-x86_64-ebs"
+        ]
+    },
+    {
+        "region": "ap-southeast-1",
+        "amis": [
+            {
+                "id": "ami-838685ff",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-ebs"
+            },
+            {
+                "id": "ami-05868579",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-gp2"
+            },
+            "ami-a48586d8 amzn2-ami-minimal-hvm-2.0.20180622.1-x86_64-ebs"
+        ]
+    },
+    {
+        "region": "ap-southeast-2",
+        "amis": [
+            {
+                "id": "ami-7bf82119",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-ebs"
+            },
+            {
+                "id": "ami-39f8215b",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-gp2"
+            },
+            "ami-35f82157 amzn2-ami-minimal-hvm-2.0.20180622.1-x86_64-ebs"
+        ]
+    },
+    {
+        "region": "ca-central-1",
+        "amis": [
+            {
+                "id": "ami-72e96b16",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-ebs"
+            },
+            {
+                "id": "ami-0ee86a6a",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-gp2"
+            },
+            "ami-0de86a69 amzn2-ami-minimal-hvm-2.0.20180622.1-x86_64-ebs"
+        ]
+    },
+    {
+        "region": "eu-central-1",
+        "amis": [
+            {
+                "id": "ami-e2526d09",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-ebs"
+            },
+            {
+                "id": "ami-7c4f7097",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-gp2"
+            },
+            "ami-794e7192 amzn2-ami-minimal-hvm-2.0.20180622.1-x86_64-ebs"
+        ]
+    },
+    {
+        "region": "eu-west-1",
+        "amis": [
+            {
+                "id": "ami-776a659d",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-ebs"
+            },
+            {
+                "id": "ami-466768ac",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-gp2"
+            },
+            "ami-586867b2 amzn2-ami-minimal-hvm-2.0.20180622.1-x86_64-ebs"
+        ]
+    },
+    {
+        "region": "eu-west-2",
+        "amis": [
+            {
+                "id": "ami-a4b950c3",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-ebs"
+            },
+            {
+                "id": "ami-b8b45ddf",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-gp2"
+            },
+            "ami-e5b45d82 amzn2-ami-minimal-hvm-2.0.20180622.1-x86_64-ebs"
+        ]
+    },
+    {
+        "region": "eu-west-3",
+        "amis": [
+            {
+                "id": "ami-2af54557",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-ebs"
+            },
+            {
+                "id": "ami-2cf54551",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-gp2"
+            },
+            "ami-2df54550 amzn2-ami-minimal-hvm-2.0.20180622.1-x86_64-ebs"
+        ]
+    },
+    {
+        "region": "sa-east-1",
+        "amis": [
+            {
+                "id": "ami-a3c892cf",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-ebs"
+            },
+            {
+                "id": "ami-6dca9001",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-gp2"
+            },
+            "ami-62cb910e amzn2-ami-minimal-hvm-2.0.20180622.1-x86_64-ebs"
+        ]
+    },
+    {
+        "region": "us-east-1",
+        "amis": [
+            {
+                "id": "ami-5d0b5a22",
+                "type": "amzn2-ami-graphics-hvm-2.0.20180622.1-x86_64-gp2"
+            },
+            {
+                "id": "ami-7105540e",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-ebs"
+            },
+            {
+                "id": "ami-b70554c8",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-gp2"
+            },
+            "ami-d20657ad amzn2-ami-minimal-hvm-2.0.20180622.1-x86_64-ebs"
+        ]
+    },
+    {
+        "region": "us-east-2",
+        "amis": [
+            {
+                "id": "ami-d80c35bd",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-ebs"
+            },
+            {
+                "id": "ami-8c122be9",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-gp2"
+            },
+            "ami-e50f3680 amzn2-ami-minimal-hvm-2.0.20180622.1-x86_64-ebs"
+        ]
+    },
+    {
+        "region": "us-west-1",
+        "amis": [
+            {
+                "id": "ami-57876134",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-ebs"
+            },
+            {
+                "id": "ami-e0ba5c83",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-gp2"
+            },
+            "ami-07bf5964 amzn2-ami-minimal-hvm-2.0.20180622.1-x86_64-ebs"
+        ]
+    },
+    {
+        "region": "us-west-2",
+        "amis": [
+            {
+                "id": "ami-bdd09ec5",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-ebs"
+            },
+            {
+                "id": "ami-a9d09ed1",
+                "type": "amzn2-ami-hvm-2.0.20180622.1-x86_64-gp2"
+            },
+            "ami-37efa14f amzn2-ami-minimal-hvm-2.0.20180622.1-x86_64-ebs"
+        ]
+    }
+]
