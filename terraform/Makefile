@@ -1,3 +1,5 @@
+.PHONY: exec
+
 IMAGE_NAME=hashicorp/terraform
 VERSION=light
 WORKDIR=/usr/src/app
