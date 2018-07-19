@@ -1,4 +1,4 @@
-FROM python:3.6.5-slim-stretch
+FROM python:3.7-slim-stretch
 
 WORKDIR /usr/src/app
 

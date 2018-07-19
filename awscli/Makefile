@@ -3,6 +3,7 @@ VERSION=latest
 WORKDIR=/usr/src/app
 
 build:
+	docker image pull python:3.7-slim-stretch
 	docker image build -t $(IMAGE_NAME):$(VERSION) .
 
 run: build
