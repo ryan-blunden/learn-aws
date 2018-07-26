@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
+# This is for Amazon Linux 1
+
 # Update System
 yum update -y
 yum install -y docker git make nano
 
-# TODO - Determine the version of docker installed and download the corresponding version of docker-compose
-curl -L https://github.com/docker/compose/releases/download/1.17.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 
 # Start Docker now that it is installed
