@@ -3,8 +3,6 @@ build:
 	cd awscli && "$(MAKE)" build
 
 	docker image pull hashicorp/terraform:light
-	cd terraform/ec2 && "$(MAKE)" init
-	cd terraform/vpc && "$(MAKE)" init
 
 	docker image pull amazonlinux:latest
 	cd lambda/chalice && "$(MAKE)" build
