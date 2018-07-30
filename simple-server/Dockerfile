@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 RUN pip install pystache
 
-COPY server.py .
+COPY . .
 
 EXPOSE 8080
 
