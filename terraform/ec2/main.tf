@@ -5,7 +5,7 @@ provider "aws" {}
 # ------------------------------------------
 
 resource "aws_security_group" "this" {
-  name        = "${var.security_group_name}"
+  name        = "${var.app_name}-sg"
   description = "Allow all inbound traffic to 22 and 8080"
   vpc_id      = "${var.vpc_id}"
 
@@ -31,7 +31,7 @@ resource "aws_security_group" "this" {
   }
 
   tags {
-    Name = "${var.security_group_name}"
+    Name = "${var.app_name}-sg"
   }
 }
 
@@ -40,7 +40,7 @@ resource "aws_security_group" "this" {
 # ------------------------------------------
 
 resource "aws_iam_policy" "this" {
-  name        = "push-metrics-cloudwatch"
+  name        = "${var.app_name}-push-metrics-cloudwatch"
   path        = "/"
   description = "Push Metrics to CloudWatch"
 
@@ -48,7 +48,7 @@ resource "aws_iam_policy" "this" {
 }
 
 resource "aws_iam_role" "this" {
-  name = "${var.instance_name}-role"
+  name = "${var.app_name}-role"
 
   assume_role_policy = "${file("resources/iam-policy-instance-assume-role.json")}"
 }
@@ -59,7 +59,7 @@ resource "aws_iam_role_policy_attachment" "this" {
 }
 
 resource "aws_iam_instance_profile" "this" {
-  name = "${var.instance_name}-role"
+  name = "${var.app_name}-instance-profile"
   role = "${aws_iam_role.this.name}"
 }
 
@@ -86,6 +86,6 @@ resource "aws_instance" "this" {
   user_data = "${file("resources/user-data.sh")}"
 
   tags {
-    Name = "${var.instance_name}"
+    Name = "${var.app_name}"
   }
 }
