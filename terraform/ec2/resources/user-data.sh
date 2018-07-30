@@ -19,3 +19,10 @@ unzip CloudWatchMonitoringScripts-1.2.2.zip
 rm CloudWatchMonitoringScripts-1.2.2.zip
 cd aws-scripts-mon
 (crontab -l && echo "*/5 * * * * /aws-scripts-mon/mon-put-instance-data.pl --mem-used-incl-cache-buff --mem-util --disk-space-util --disk-path=/ --from-cron") | crontab -
+
+# Run the simple-server app
+cd /home/ec2-user && \
+    git clone https://github.com/ryan-blunden/learn-aws.git --depth=1 && \
+    cd learn-aws/simple-server && \
+    make build && \
+    make run
