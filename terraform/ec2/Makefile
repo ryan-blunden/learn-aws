@@ -11,4 +11,4 @@ destroy:
 	cd ../ && "$(MAKE)" exec TERRAFORM_MODULE="$(CURDIR)" CMD="terraform destroy -force -var-file terraform.tfvars"
 
 output:
-	cd ../ && "$(MAKE)" exec TERRAFORM_MODULE="$(CURDIR)" CMD="terraform output"
+	cd ../ && "$(MAKE)" exec TERRAFORM_MODULE="$(CURDIR)" CMD="terraform output -json"
