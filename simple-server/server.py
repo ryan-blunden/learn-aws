@@ -1,11 +1,11 @@
 #! /usr/bin/env python3
 import datetime
 import json
-import socket
 from dataclasses import dataclass
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 import pystache
+from ec2_metadata import ec2_metadata
 
 
 class SETTINGS:
@@ -23,8 +23,8 @@ class HTTPResponse:
 
 def index() -> HTTPResponse:
     content = pystache.render(open('content/index.html').read(), {
-        'hostname': socket.gethostname(),
-        'ip': socket.gethostbyname(socket.gethostname()),
+        'hostname': ec2_metadata.private_hostname,
+        'ip': ec2_metadata.private_ipv4,
         'time': datetime.datetime.utcnow(),
         'health': SETTINGS.HEALTHY
     })
@@ -60,6 +60,9 @@ URLS = {
 
 
 class HTTPHandler(BaseHTTPRequestHandler):
+    # Use HTTP 1.1 as 1.0 doesn't support chunked encoding
+    protocol_version = "HTTP/1.1"
+
     response: HTTPResponse
 
     def do_HEAD(self):
@@ -68,10 +71,10 @@ class HTTPHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        # try:
-        self.response = URLS.get(self.path, _404)()
-        # except Exception as e:
-        #     self.response = _500(str(e))
+        try:
+            self.response = URLS.get(self.path, _404)()
+        except Exception as e:
+            self.response = _500(str(e))
 
         self.send_response(self.response.status)
         self.send_header('Content-type', self.response.content_type)
