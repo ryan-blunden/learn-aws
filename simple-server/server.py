@@ -68,6 +68,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
     def do_HEAD(self):
         self.send_response(self.response.status)
         self.send_header('Content-type', self.response.content_type)
+        self.send_header('Content-length', len(self.response.content.encode('utf-8')))
         self.end_headers()
 
     def do_GET(self):
@@ -78,6 +79,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
 
         self.send_response(self.response.status)
         self.send_header('Content-type', self.response.content_type)
+        self.send_header('Content-length', len(self.response.content.encode('utf-8')))
         self.end_headers()
 
         self.wfile.write(bytes(self.response.content, 'utf-8'))
