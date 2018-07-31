@@ -6,7 +6,18 @@ yum update -y
 yum upgrade
 
 # Install required dependencies
-yum install -y docker git make nano python3
+yum install -y \
+    docker \
+    git \
+    make \
+    nano \
+    python3 \
+    perl-Switch \
+    perl-DateTime \
+    perl-Sys-Syslog \
+    perl-LWP-Protocol-https \
+    perl-Digest-SHA.x86_64
+
 pip3 install pip setuptools --upgrade
 pip3 install docker-compose
 
