@@ -5,5 +5,5 @@ WORKDIR=/usr/src/app
 build:
 	docker image build -t $(IMAGE_NAME):$(VERSION) .
 
-wait: build
+wait:
 	docker container run $(IMAGE_NAME):$(VERSION) -t 120 $(for)
