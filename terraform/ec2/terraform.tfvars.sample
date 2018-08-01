@@ -2,7 +2,7 @@ vpc_id = ""
 
 subnet_ids = [""]
 
-instance_name = ""
+app_name = ""
 
 key_name = ""
 
@@ -13,5 +13,3 @@ instance_type = ""
 # To find the list of Amazon Liunx AMI IDs for each region, go to
 # https://aws.amazon.com/amazon-linux-2/release-notes/
 ami_id = ""
-
-security_group_name = ""
