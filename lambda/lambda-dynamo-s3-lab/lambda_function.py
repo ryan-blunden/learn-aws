@@ -3,7 +3,7 @@ import urllib
 
 import boto3
 
-sesclient = boto3.client('ses')
+sesclient = boto3.client('ses', region_name='us-east-1')
 dynamoClient = boto3.client('dynamodb')
 s3client = boto3.client('s3')
 s3 = boto3.resource('s3')

@@ -1,0 +1,17 @@
+aws_access_key = ""
+
+aws_secret_key = ""
+
+aws_region = "us-east-1"
+
+recipient_email = ""
+
+# You shouldn't need to change this, as a random string is added
+lambda_function_name = "my_meme_emailer"
+
+# No underscores allowed! You shouldn't need to change this, as a random string is added to it
+s3_bucket_name = "meme-emailer"
+
+# You shouldn't need to change this, as a random string is added
+table_name = "MEME"
+
