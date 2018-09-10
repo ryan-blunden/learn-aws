@@ -12,9 +12,6 @@ build:
 	cd utils/wait-for-it && \
 	"$(MAKE)" build
 
-	docker image pull openjdk:11-jre-slim
-	cd dynamodb && "$(MAKE)" build
-
 	docker image pull minio/minio:latest
 
 wait:

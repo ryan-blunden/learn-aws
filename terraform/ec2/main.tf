@@ -85,6 +85,10 @@ resource "aws_instance" "this" {
 
   user_data = "${file("resources/user-data.sh")}"
 
+  lifecycle {
+    create_before_destroy = true
+  }
+
   tags {
     Name = "${var.app_name}"
   }
