@@ -2,7 +2,7 @@
 import datetime
 import json
 from dataclasses import dataclass
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 import pystache
 from ec2_metadata import ec2_metadata
@@ -86,7 +86,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
 
 
 if __name__ == '__main__':
-    server_class = HTTPServer
+    server_class = ThreadingHTTPServer
     httpd = server_class((SETTINGS.HOST, SETTINGS.PORT), HTTPHandler)
     try:
         httpd.serve_forever()
