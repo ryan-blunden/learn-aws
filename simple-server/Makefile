@@ -1,7 +1,7 @@
 IMAGE_NAME=rabbitbird/simple-server
 VERSION=latest
 WORKDIR=/usr/src/app
-PORT=8080
+PORT=80
 
 build:
 	docker image build -t $(IMAGE_NAME):$(VERSION) .
