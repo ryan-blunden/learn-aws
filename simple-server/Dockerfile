@@ -14,6 +14,6 @@ RUN pip install pip setuptools --upgrade && \
 
 COPY . .
 
-EXPOSE 8080
+EXPOSE 80
 
 CMD ["python", "server.py"]

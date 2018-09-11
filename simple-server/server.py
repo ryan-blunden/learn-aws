@@ -10,7 +10,7 @@ from ec2_metadata import ec2_metadata
 
 class SETTINGS:
     HOST: str = '0.0.0.0'
-    PORT: int = 8080
+    PORT: int = 80
     HEALTHY: bool = True
 
 
