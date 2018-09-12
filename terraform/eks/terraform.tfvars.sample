@@ -1,0 +1,7 @@
+eks_cluster_name = ""
+
+vpc_id = ""
+
+nat_gateway_id = ""
+
+eks_cluster_azs = []
